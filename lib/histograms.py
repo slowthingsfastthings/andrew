@@ -48,7 +48,7 @@ def histogram(col, axis=0, bins=25, maxvalues=41, color='blue', alpha=0.8, orien
     if axis!=0:
         plt.sca(axis)
 
-    plt.hist(col, color=color, alpha=alpha, bins=bins, range=(colmin, colmax), orientation=orientation)   
+    plt.hist(col.values, color=color, alpha=alpha, bins=bins, range=(colmin, colmax), orientation=orientation)   
 
 #------------------------------------------------
 # ===============================================

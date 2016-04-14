@@ -21,7 +21,14 @@ import histograms as histos
 df = pd.read_csv('data/train.csv', index_col=0)
 #mi.mutual_information(df.values, "TARGET")
 mi = histos.mutual_information(df, df["TARGET"], bins=[25,25])
-mi[:20].plot(kind='barh', title='Mutual Information')
+#mi[:20].plot(kind='barh', title='Mutual Information')
+
+# get a dataframe of the top 15 mutual info variables 
+dftopv = pd.DataFrame()
+dftopv = df[list(mi[:15].index)]
+
+histos.histogram_all_vars(dftopv);
+
 #df.ix[:5,0:10] # row begin:row end, column begin:column end
 #num_unique_values = col.value_counts().size
 #df = df.reindex(np.random.permutation(df.index))

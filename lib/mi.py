@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 from sklearn.metrics import mutual_info_score
 
+##### numpy documentation on histogram binning
 #bins : int or array_like or [int, int] or [array, array], optional
 #The bin specification:
 #  If int, the number of bins for the two dimensions (nx=ny=bins).
@@ -14,8 +15,10 @@ from sklearn.metrics import mutual_info_score
 
 def calc_MI(x, y, bins=[25,25], maxvalues=41):
     "Calculates the mutual information between two variables."
-    # [0] gets the histogram, [1] & [2] are binning info.
 
+    # maxvalues determines the cutoff between real and discrete
+    # for discrete information it makes sense to use the number of unique values as the number of bins
+    # if there are only two classes we want to use two bins not say 25 bins
     num_unique_values_x = pd.value_counts(x).size
     num_unique_values_y = pd.value_counts(y).size
     if num_unique_values_x < maxvalues: 
@@ -23,12 +26,15 @@ def calc_MI(x, y, bins=[25,25], maxvalues=41):
     if num_unique_values_y < maxvalues: 
         bins[1] = num_unique_values_y
 	    
+    # create the 2d histogram needed to calculate the mutual information via sklearn
+    # [0] gets the histogram, [1] & [2] are binning info.
     c_xy = np.histogram2d(x, y, bins=bins)[0]
     # use scikit learn to calculate the mi value
     mi = mutual_info_score(None, None, contingency=c_xy)
     return mi
 
 def mutual_info_matrix(dfvalues, bins=[25,25], maxvalues=41):
+    "Calculates the mutual information between all of the variables in the dataframe."
     # calculate the mutual information between all of the different variables
     # matMI[1,2] = mutual info between variables 1 and 2
     # get the number of different variables
@@ -49,8 +55,10 @@ def mutual_info_matrix(dfvalues, bins=[25,25], maxvalues=41):
     return matMI
 
 def mutual_info_matrix(dfvalues, targetvalues, bins=[25,25], maxvalues=41):
-    # calculate the mutual information between all of the different variables
-    # matMI[1,2] = mutual info between variables 1 and 2
+    "Calculates the mutual information between a set of feature variables and a target variable."
+
+    # calculate the mutual information between each variable and the target
+    # mi[i] = mutual info between variable i and the target
     # get the number of different variables
     n = dfvalues.shape[1]
 
