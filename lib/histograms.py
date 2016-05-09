@@ -317,18 +317,6 @@ def p_x_given_y_all_vars(df, target, bins=(25,25), maxvalues=42):
     fig.tight_layout()
     return fig
 
-
-#------------------------------------------------
-# ===============================================
-#------------------------------------------------
-
-def mutual_information(featuredf, targetdf, axis=0, bins=[25,25], maxvalues=41):
-    mi = pd.Series(mutual_info_matrix(featuredf.values, targetdf.values, bins=bins, maxvalues=maxvalues))
-    mi.index = featuredf.columns
-    mi.sort(ascending=False)
-    print mi;
-    return mi
-
 #------------------------------------------------
 # ===============================================
 #------------------------------------------------

@@ -4,6 +4,10 @@ import pandas as pd
 import numpy as np
 from sklearn.metrics import mutual_info_score
 
+#------------------------------------------------
+# ===============================================
+#------------------------------------------------
+
 ##### numpy documentation on histogram binning
 #bins : int or array_like or [int, int] or [array, array], optional
 #The bin specification:
@@ -33,6 +37,10 @@ def calc_MI(x, y, bins=[25,25], maxvalues=41):
     mi = mutual_info_score(None, None, contingency=c_xy)
     return mi
 
+#------------------------------------------------
+# ===============================================
+#------------------------------------------------
+
 def mutual_info_matrix(dfvalues, bins=[25,25], maxvalues=41):
     "Calculates the mutual information between all of the variables in the dataframe."
     # calculate the mutual information between all of the different variables
@@ -54,6 +62,10 @@ def mutual_info_matrix(dfvalues, bins=[25,25], maxvalues=41):
     matMI+=(matMI.T-np.diagflat(matMI.diagonal()));
     return matMI
 
+#------------------------------------------------
+# ===============================================
+#------------------------------------------------
+
 def mutual_info_matrix(dfvalues, targetvalues, bins=[25,25], maxvalues=41):
     "Calculates the mutual information between a set of feature variables and a target variable."
 
@@ -74,3 +86,16 @@ def mutual_info_matrix(dfvalues, targetvalues, bins=[25,25], maxvalues=41):
     mi = mi/mi[n-1]
 
     return mi
+
+#------------------------------------------------
+# ===============================================
+#------------------------------------------------
+
+def mutual_information(featuredf, targetdf, axis=0, bins=[25,25], maxvalues=41):
+    mi = pd.Series(mutual_info_matrix(featuredf.values, targetdf.values, bins=bins, maxvalues=maxvalues))
+    mi.index = featuredf.columns
+    mi.sort(ascending=False)
+    print mi; 
+    return mi
+
+
